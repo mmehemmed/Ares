@@ -16,7 +16,7 @@ const char *fragShaderSource =
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
-"    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"    FragColor = vec4(1.0f, 0.2f, 0.2f, 1.0f);\n"
 "}\0";
 
 unsigned int vertexShader;
@@ -49,7 +49,7 @@ void createShaders(){
         fprintf(stderr,"ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n");
     }
 }
-void createProgram(){
+void createShaderProgram(){
     shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
@@ -60,6 +60,12 @@ void cleanShaderData(){
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }
+
+
+
+
+
+
 void loadModelData(float vertices[],int number_of_vertices){
     glGenBuffers(1,&VBO);
     glGenVertexArrays(1, &VAO);
@@ -70,22 +76,19 @@ void loadModelData(float vertices[],int number_of_vertices){
     glEnableVertexAttribArray(0); 
 }
 
-
-void generate(float vertices[],int number_of_vertices){
+//    loadModelData(vertices,number_of_vertices);
+void initializeRenderer(){
     glEnable(GL_DEPTH_TEST);
-    loadModelData(vertices,number_of_vertices);
     createShaders();
-    createProgram();
+    createShaderProgram();
 } 
 
-void prepare(){
+void prepareRenderer(){
     glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 }
-void render(float vertices[],int number_of_vertices){
+void render(int number_of_vertices){
     glBindVertexArray(VAO);
     glUseProgram(shaderProgram);
-    glBufferData(GL_ARRAY_BUFFER, number_of_vertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW);
     glDrawArrays(GL_TRIANGLES, 0, number_of_vertices);
 }

@@ -4,13 +4,13 @@
 #include "renderer.h"
 #include <stdio.h>
 
+ extern GLFWwindow* window;
 
  float vertices[] = {
     -0.5f, -0.5f, 0.0f,
      0.5f, -0.5f, 0.0f,
      0.0f,  0.5f, 0.0f
 };
-
 void processInput(GLFWwindow *window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -20,20 +20,20 @@ void processInput(GLFWwindow *window)
 int main() {
     createWindow();
 
+    initializeRenderer();
+    loadModelData(vertices,3);
+
     if (!window) {
         fprintf(stderr, "Window creation failed\n");
         return -1;
     }
     printf("Window sucsesfully created");
 
-
-    generate(vertices,3);
-
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
 
-        prepare();
-        render(vertices,3);
+        prepareRenderer();
+        render(3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
